@@ -598,6 +598,7 @@ void DRTupleStream::generateDREvent(DREventType type, int64_t lastCommittedSpHan
 
     switch (type) {
     case CATALOG_UPDATE:
+    case DR_STREAM_END:
     case DR_STREAM_START: {
         // Make sure current block is empty
         extendBufferChain(0);

@@ -215,4 +215,10 @@ public class SysProcFragmentId
     // @PrepareShutdown
     public static final long PF_prepareShutdown = 310;
     public static final long PF_prepareShutdownAggregate = 311;
+
+    // @ResetDRSelf
+    public static final long PF_preResetDRSelf = 312;
+    public static final long PF_preResetDRSelfAggregate = 313;
+    public static final long PF_postResetDRSelf = 314;
+    public static final long PF_postResetDRSelfAggregate = 315;
 }
