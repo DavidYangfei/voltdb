@@ -2001,20 +2001,8 @@ public class LocalCluster extends VoltServerConfig {
     public static LocalCluster createLocalCluster(String schemaDDL, int siteCount, int hostCount, int kfactor, int clusterId,
                                                   int replicationPort, int remoteReplicationPort, String pathToVoltDBRoot, String jar,
                                                   DrRoleType drRole, boolean hasLocalServer, VoltProjectBuilder builder) throws IOException {
-        builder.addLiteralSchema(schemaDDL);
-        builder.setDrProducerEnabled();
-        if (drRole == DrRoleType.REPLICA) {
-            builder.setDrReplica();
-        } else if (drRole == DrRoleType.XDCR) {
-            builder.setXDCR();
-        }
-        if (remoteReplicationPort != 0) {
-            builder.setDRMasterHost("localhost:" + remoteReplicationPort);
-        }
-        LocalCluster lc = new LocalCluster(jar, siteCount, hostCount, kfactor, clusterId, BackendTarget.NATIVE_EE_JNI, false);
-        lc.setReplicationPort(replicationPort);
-        boolean success = lc.compile(builder, pathToVoltDBRoot);
-        assert(success);
+        LocalCluster lc = compileBuilder(schemaDDL, siteCount, hostCount, kfactor, clusterId,
+                replicationPort, remoteReplicationPort, pathToVoltDBRoot, jar, drRole, builder);
 
         System.out.println("Starting local cluster.");
         lc.setHasLocalServer(hasLocalServer);
@@ -2032,6 +2020,27 @@ public class LocalCluster extends VoltServerConfig {
             System.out.printf("Local cluster node[%d] ports: %d, %d, %d, %d\n",
                     i, lc.internalPort(i), lc.adminPort(i), lc.port(i), lc.drAgentStartPort(i));
         }
+        return lc;
+    }
+
+    public static LocalCluster compileBuilder(String schemaDDL, int siteCount, int hostCount,
+                                       int kfactor, int clusterId, int replicationPort,
+                                       int remoteReplicationPort, String pathToVoltDBRoot, String jar,
+                                       DrRoleType drRole, VoltProjectBuilder builder)
+        throws IOException {
+        builder.addLiteralSchema(schemaDDL);
+        builder.setDrProducerEnabled();
+        if (drRole == DrRoleType.REPLICA) {
+            builder.setDrReplica();
+        } else if (drRole == DrRoleType.XDCR) {
+            builder.setXDCR();
+        }
+        if (remoteReplicationPort != 0) {
+            builder.setDRMasterHost("localhost:" + remoteReplicationPort);
+        }
+        LocalCluster lc = new LocalCluster(jar, siteCount, hostCount, kfactor, clusterId, BackendTarget.NATIVE_EE_JNI, false);
+        lc.setReplicationPort(replicationPort);
+        assert(lc.compile(builder, pathToVoltDBRoot));
         return lc;
     }
 

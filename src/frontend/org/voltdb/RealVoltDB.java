@@ -3436,7 +3436,8 @@ public class RealVoltDB implements VoltDBInterface, RestoreAgent.Callback, HostM
                     m_consumerDRGateway.updateCatalog(m_catalogContext,
                                                       (newDRConnectionSource != null && !newDRConnectionSource.equals(oldDRConnectionSource)
                                                        ? newDRConnectionSource
-                                                       : null));
+                                                       : null),
+                                                      (byte) m_catalogContext.cluster.getPreferredsource());
                 }
 
                 // Check if this is promotion
@@ -4081,6 +4082,7 @@ public class RealVoltDB implements VoltDBInterface, RestoreAgent.Callback, HostM
                         Cartographer.class,
                         HostMessenger.class,
                         byte.class,
+                        byte.class,
                         String.class,
                         int.class);
                 m_consumerDRGateway = (ConsumerDRGateway) rdrgwConstructor.newInstance(
@@ -4088,6 +4090,7 @@ public class RealVoltDB implements VoltDBInterface, RestoreAgent.Callback, HostM
                         m_cartographer,
                         m_messenger,
                         drConsumerClusterId,
+                        (byte) m_catalogContext.cluster.getPreferredsource(),
                         drIfAndPort.getFirst(),
                         drIfAndPort.getSecond());
                 m_globalServiceElector.registerService(m_consumerDRGateway);
