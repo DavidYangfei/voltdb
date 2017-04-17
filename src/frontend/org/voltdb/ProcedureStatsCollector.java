@@ -87,7 +87,7 @@ public class ProcedureStatsCollector extends SiteStatsSource {
         m_partitionId = partitionId;
         m_procName = procName;
 
-        m_stmtStatsMap = new HashMap<String, StatementStats>();
+        m_stmtStatsMap = new HashMap<>();
         // Use one StatementStats instance to hold the procedure-wide statistics.
         // The statement name for this StatementStats is "<ALL>".
         // It does not have coordinator task to track.
@@ -121,7 +121,7 @@ public class ProcedureStatsCollector extends SiteStatsSource {
         long invocations = fuzzyInvocationCounter.getAndIncrement();
 
         boolean samplingProcedure = (invocations % m_procSamplingInterval == 0) || m_isUAC;
-        boolean samplingStmts = invocations % m_stmtSamplingInterval == 0;
+        boolean samplingStmts = false;
 
         long startTimeNanos = samplingProcedure ? System.nanoTime() : 0;
 
