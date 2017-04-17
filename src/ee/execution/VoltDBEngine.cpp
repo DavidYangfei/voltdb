@@ -2024,6 +2024,7 @@ void VoltDBEngine::executeTask(TaskType taskType, ReferenceSerializeInputBE &tas
         int64_t spHandle = taskInfo.readLong();
         ByteArray payloads = taskInfo.readBinaryString();
 
+        std::cout << "TASK_TYPE_GENERATE_DR_EVENT " << type << " uniqueId :" << uniqueId << "\n";
         m_executorContext->drStream()->generateDREvent(type, lastCommittedSpHandle,
                                                        spHandle, uniqueId, payloads);
         if (m_executorContext->drReplicatedStream()) {

@@ -580,6 +580,7 @@ bool DRTupleStream::checkOpenTransaction(StreamBlock* sb, size_t minLength, size
 void DRTupleStream::generateDREvent(DREventType type, int64_t lastCommittedSpHandle, int64_t spHandle,
         int64_t uniqueId, ByteArray payloads)
 {
+    std::cout << "generateDREvent " << type << " uniqueId :" << uniqueId << "\n";
     assert(!m_opened);
 
     ++m_openSequenceNumber;

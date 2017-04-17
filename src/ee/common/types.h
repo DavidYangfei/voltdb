@@ -510,7 +510,7 @@ enum DREventType {
     POISON_PILL = 1,      // not supported in EE
     CATALOG_UPDATE = 2,
     DR_STREAM_START = 3,
-    DR_STREAM_END = 5,
+    DR_STREAM_END = 4,
 };
 
 
